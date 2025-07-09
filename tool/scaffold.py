@@ -43,7 +43,7 @@ run_tests()
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
-        print("Usage: python3 tool/init.py <problem_number>")
+        print("Usage: python3 tool/scaffold.py <problem_number>")
     else:
         problem_number = sys.argv[1]
         create_file(problem_number)

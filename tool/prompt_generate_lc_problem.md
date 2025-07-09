@@ -14,92 +14,97 @@ Provide complete information about LeetCode problem #{problem_number}. Please in
 
 ## Example Output Format
 
-For reference, here's how the output should look for LeetCode problem #226:
+For reference, here's how the output should look for the LeetCode problem #110:
 
 ```
-# 226. Invert Binary Tree
+# 110. Balanced Binary Tree
 
-Given the `root` of a binary tree, invert the tree, and return its root.
+# Given a binary tree, determine if it is height-balanced.
+#
+# A height-balanced binary tree is a binary tree in which the depth of the two subtrees of every node never differs by more than one.
+#
+# ### Constraints:
+# - The number of nodes in the tree is in the range `[0, 5000]`.
+# - `-100 <= Node.val <= 100`
+#
+# ### Example 1:
+# Input: root = [3,9,20,null,null,15,7]
+# Output: true
+#
+# ### Example 2:
+# Input: root = [1,2,2,3,3,null,null,4,4]
+# Output: false
+#
+# ### Example 3:
+# Input: root = []
+# Output: true
 
-### Constraints:
-- The number of nodes in the tree is in the range `[0, 100]`.
-- `-100 <= Node.val <= 100`
-
-### Example 1:
-Input: root = [4,2,7,1,3,6,9]
-Output: [4,7,2,9,6,3,1]
-
-### Example 2:
-Input: root = [2,1,3]
-Output: [2,3,1]
-
-### Example 3:
-Input: root = []
-Output: []
-
-```python
-from typing import Optional
-from typing import Optional
+from test.test_suite import run_tests
+from typing import *
 from libs.tree import TreeNode
-
-# LeetCode的TreeNode实现是标准的可变对象
-# class TreeNode:
-#     def __init__(self, val=0, left=None, right=None):
-#         self.val = val
-#         self.left = left
-#         self.right = right
 
 
 class Solution:
-    def invertTree(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
+    def isBalanced(self, root: Optional[TreeNode]) -> bool:
         pass
-        
+
 
 test_cases = [
     {
-        "method": "invertTree",
-        "root": [4, 2, 7, 1, 3, 6, 9],
-        "expected": [4, 7, 2, 9, 6, 3, 1],
+        "method": "isBalanced",
+        "root": [3, 9, 20, None, None, 15, 7],
+        "expected": True,
         "case_id": 1,
-        "description": "Standard balanced binary tree"
-    }, {
-        "method": "invertTree",
-        "root": [2, 1, 3],
-        "expected": [2, 3, 1],
+        "description": "Balanced binary tree"
+    },
+    {
+        "method": "isBalanced",
+        "root": [1, 2, 2, 3, 3, None, None, 4, 4],
+        "expected": False,
         "case_id": 2,
-        "description": "Small binary tree with three nodes"
-    }, {
-        "method": "invertTree",
+        "description": "Unbalanced binary tree (deep on one side)"
+    },
+    {
+        "method": "isBalanced",
         "root": [],
-        "expected": [],
+        "expected": True,
         "case_id": 3,
-        "description": "Empty tree"
-    }, {
-        "method": "invertTree",
+        "description": "Empty tree (considered balanced)"
+    },
+    {
+        "method": "isBalanced",
         "root": [1],
-        "expected": [1],
+        "expected": True,
         "case_id": 4,
-        "description": "Single node tree"
-    }, {
-        "method": "invertTree",
-        "root": [1, 2],
-        "expected": [1, None, 2],
+        "description": "Single node tree (considered balanced)"
+    },
+    {
+        "method": "isBalanced",
+        "root": [1, 2, None, 3, None, 4, None, 5],
+        "expected": False,
         "case_id": 5,
-        "description": "Tree with only left child"
-    }, {
-        "method": "invertTree",
-        "root": [1, None, 2],
-        "expected": [1, 2, None],
+        "description": "Unbalanced skewed tree (left side)"
+    },
+    {
+        "method": "isBalanced",
+        "root": [1, None, 2, None, 3, None, 4, None, 5],
+        "expected": False,
         "case_id": 6,
-        "description": "Tree with only right child"
-    }, {
-        "method": "invertTree",
-        "root": [1, 2, 3, 4, 5, 6, 7],
-        "expected": [1, 3, 2, 7, 6, 5, 4],
+        "description": "Unbalanced skewed tree (right side)"
+    },
+    {
+        "method": "isBalanced",
+        "root": [1, 2, 2, 3, None, None, 3, 4, None, None, 4],
+        "expected": True,
         "case_id": 7,
-        "description": "Complete binary tree with multiple levels"
+        "description": "Balanced tree with deeper but still balanced subtrees"
     }
 ]
+
+run_tests()
+
 ```
 
-Please provide the complete information for LeetCode problem #{problem_number} following this format.
+Please provide the complete information for LeetCode problem #{problem_number} following above structure and format (
+especially follow the `class Solution` and `test_cases` parts, and leave the solution function body empty for me to
+implement).
