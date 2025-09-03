@@ -1,29 +1,46 @@
 # 142.py
 from test.test_suite import run_tests
 from libs.linked_list import ListNode
+from typing import *
 
 
 class Solution:
-    def detectCycle(self, head: ListNode) -> ListNode:
-        if not head or not head.next:
-            return None
+    # def detectCycle(self, head: ListNode) -> ListNode:
+    #     if not head or not head.next:
+    #         return None
+    #
+    #     # Step 1: Detect cycle using fast and slow pointers
+    #     slow = fast = head
+    #     while fast and fast.next:
+    #         slow = slow.next
+    #         fast = fast.next.next
+    #         if slow == fast:
+    #             break
+    #     else:
+    #         return None  # No cycle
+    #
+    #     # Step 2: Find cycle entry
+    #     slow = head
+    #     while slow != fast:
+    #         slow = slow.next
+    #         fast = fast.next
+    #     return slow
+    def detectCycle(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        if not head: return None
 
-        # Step 1: Detect cycle using fast and slow pointers
+        # 第一阶段：判断是否有环
         slow = fast = head
         while fast and fast.next:
             slow = slow.next
             fast = fast.next.next
             if slow == fast:
-                break
-        else:
-            return None  # No cycle
-
-        # Step 2: Find cycle entry
-        slow = head
-        while slow != fast:
-            slow = slow.next
-            fast = fast.next
-        return slow
+                # 第二阶段：找环入口
+                ptr = head
+                while ptr != slow:
+                    ptr = ptr.next
+                    slow = slow.next
+                return ptr
+        return None
 
 
 test_cases = [

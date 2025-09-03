@@ -35,43 +35,86 @@
 from test.test_suite import run_tests
 
 
-# 初稿问题：
-# 考虑但没处理越界问题
-# 没用Python的String切片写法
-# enumerate的参数搞反了
-
+# KMP 算法 效率：O(n + m) 稳定优于其他方案的最坏情况。
 # class Solution:
 #     def strStr(self, haystack: str, needle: str) -> int:
-#         if needle == '': return 0
+#         if not needle:
+#             return 0
+#         n, m = len(haystack), len(needle)
+#         if m > n:
+#             return -1
 #
-#         n_len = len(needle)
-#         h_len = len(haystack)
+#         def compute_lps(needle):
+#             lps = [0] * m
+#             length = 0
+#             i = 1
+#             while i < m:
+#                 if needle[i] == needle[length]:
+#                     length += 1
+#                     lps[i] = length
+#                     i += 1
+#                 else:
+#                     if length != 0:
+#                         length = lps[length - 1]
+#                     else:
+#                         lps[i] = 0
+#                         i += 1
+#             return lps
 #
-#         if n_len > h_len: return -1
+#         lps = compute_lps(needle)
+#         i = j = 0
+#         while i < n:
+#             if haystack[i] == needle[j]:
+#                 i += 1
+#                 j += 1
+#                 if j == m:
+#                     return i - j
+#             else:
+#                 if j != 0:
+#                     j = lps[j - 1]
+#                 else:
+#                     i += 1
+#         return -1
+
+
+# 标准暴力解
+# class Solution:
+#     def strStr(self, haystack: str, needle: str) -> int:
+#         if not needle: return 0
 #
-#         for i, s in enumerate(haystack):
-#             if s == needle[0] and i + n_len <= h_len:  # 确保不会越界
-#                 flag = True
-#                 for j in range(n_len):
-#                     if needle[j] != haystack[i + j]:
-#                         flag = False
-#                         break
-#                 if flag: return i
+#         n, m = len(haystack), len(needle)
+#         if m > n: return -1
+#
+#         for i in range(n):
+#             if i + m <= n and haystack[i:i + m] == needle:
+#                 return i
 #
 #         return -1
 
-# 标准暴力解
+# Rabin-Karp 算法
+# 核心思路： 比较两个数字（3456 vs 3325）比比较两个字符串（"ll" vs "he"）快得多！
+# 把子字符串（比如 "ll"）变成一个数字。
+# 在主字符串（比如 "hello"）上滑动一个窗口，每次看窗口里的小段文字，把它也变成一个数字。
+# 比较这两个数字，如果一样，再仔细检查是不是真的匹配。
 class Solution:
     def strStr(self, haystack: str, needle: str) -> int:
-        if not needle: return 0
-
+        if not needle:
+            return 0
         n, m = len(haystack), len(needle)
-        if m > n: return -1
+        if m > n:
+            return -1
 
-        for i in range(n):
-            if i + m <= n and haystack[i:i + m] == needle:
+        def hash_value(s):
+            val = 0
+            for char in s:
+                val = val * 31 + ord(char)
+            return val
+
+        needle_hash = hash_value(needle)
+        for i in range(n - m + 1):
+            window = haystack[i:i + m]
+            if hash_value(window) == needle_hash and window == needle:
                 return i
-
         return -1
 
 

@@ -1,11 +1,15 @@
 # 1.py
+from pprint import pprint
+
 from test.test_suite import run_tests
 
 
 class Solution:
     def twoSum(self, nums: list[int], target: int) -> list[int]:
         hashed = {}
+        # pprint(enumerate(nums))
         for i, num in enumerate(nums):
+            print('i: ', i, ' num: ', num)
             diff = target - num
             if diff in hashed: return sorted([i, hashed[diff]])
             hashed[num] = i

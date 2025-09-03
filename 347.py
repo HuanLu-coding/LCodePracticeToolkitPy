@@ -27,19 +27,28 @@ from test.test_suite import run_tests
 #         threshold = sorted(list(c_n.values()), reverse=True)[k - 1]
 #         return [x for x in c_n if c_n[x] >= threshold]
 
-# 用堆
-# from collections import Counter
-# import heapq
-#
-# # 时间复杂度: O(n + n log k)，其中n是数组长度
-# # 空间复杂度: O(n)
-# # 优点: 适用于大数据集且k较小的情况，不需要对所有频率排序
-# class Solution:
-#     def topKFrequent(self, nums: list[int], k: int) -> list[int]:
-#         # O(n)
-#         count = Counter(nums)
-#         # O(n log k)
-#         return heapq.nlargest(k, count.keys(), key=count.get)
+# 用小顶堆
+from collections import Counter
+import heapq
+
+
+# 时间复杂度: O(n + n log k)，其中n是数组长度
+# 空间复杂度: O(n)
+# 优点: 适用于大数据集且k较小的情况，不需要对所有频率排序
+class Solution:
+    def topKFrequent(self, nums: list[int], k: int) -> list[int]:
+        # O(n)
+        count = Counter(nums)
+        # O(n log k)
+        return heapq.nlargest(k, count.keys(),
+                              key=count.get)  # 含义是：不要直接比较 count.keys() 中的数字本身的大小，而是要比较这些数字通过 count.get 方法查找到的频率的大小。
+    # heapq.nlargest 函数会：
+    #
+    # 遍历 count.keys() 中的每一个数字（比如 num）。
+    # 对于每个数字 num，调用 key 函数，即执行 count.get(num)，得到该数字的频率。
+    # 根据计算出的频率进行比较，找出频率最高的 k 个数字。
+    # 最终返回一个列表，包含那 k 个原始数字（不是它们的频率），这些数字对应的频率是所有数字中最高的 k 个。
+
 
 # (最优解)桶排序
 # 时间复杂度: O(n)
@@ -55,31 +64,31 @@ from test.test_suite import run_tests
 # count_map: 最坏情况下存储n个不同的元素，O(n)
 # buckets数组: O(n)
 # 总体: O(n)
-from collections import Counter
-
-
-class Solution:
-    def topKFrequent(self, nums: list[int], k: int) -> list[int]:
-        # 步骤1: 统计每个元素的频率
-        count_map = Counter(nums)
-
-        # 步骤2: 创建桶数组，每个桶存储相同频率的元素
-        # 频率范围是1到n，因此创建n+1个桶(索引0不使用)
-        n = len(nums)
-        buckets = [[] for _ in range(n + 1)]
-
-        # 步骤3: 将元素放入对应频率的桶中
-        for num, freq in count_map.items():
-            buckets[freq].append(num)
-
-        # 步骤4: 从高频到低频收集元素
-        result = []
-        for freq in range(n, 0, -1):  # 从n到1倒序遍历
-            result.extend(buckets[freq])
-            if len(result) >= k:
-                return result[:k]
-
-        return result  # 正常情况下不会执行到这一步
+# from collections import Counter
+#
+#
+# class Solution:
+#     def topKFrequent(self, nums: list[int], k: int) -> list[int]:
+#         # 步骤1: 统计每个元素的频率
+#         count_map = Counter(nums)
+#
+#         # 步骤2: 创建桶数组，每个桶存储相同频率的元素
+#         # 频率范围是1到n，因此创建n+1个桶(索引0不使用)
+#         n = len(nums)
+#         buckets = [[] for _ in range(n + 1)]
+#
+#         # 步骤3: 将元素放入对应频率的桶中
+#         for num, freq in count_map.items():
+#             buckets[freq].append(num)
+#
+#         # 步骤4: 从高频到低频收集元素
+#         result = []
+#         for freq in range(n, 0, -1):  # 从n到1倒序遍历
+#             result.extend(buckets[freq])
+#             if len(result) >= k:
+#                 return result[:k]
+#
+#         return result  # 正常情况下不会执行到这一步
 
 
 # 还有一种快速选择解法，平均时间复杂度O(n)，缺点：实现复杂，最坏情况下退化为O(n²)

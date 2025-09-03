@@ -3,16 +3,16 @@ from test.test_suite import run_tests
 
 
 class Solution:
-    def moveZeroes(self, nums: [int]) -> None:
-        index = 0
-        for i in range(len(nums)):
-            if nums[i] != 0:
-                nums[index] = nums[i]
-                index += 1
-        # 填充剩下的位置为零
-        for i in range(index, len(nums)):
-            nums[i] = 0
+    def moveZeroes(self, nums: list[int]) -> None:
+        slow = 0  # 慢指针
+        for fast in range(len(nums)):  # 快指针
+            if nums[fast] != 0:
+                if fast != slow:  # 避免冗余交换
+                    nums[fast], nums[slow] = nums[slow], nums[fast]
+                slow += 1
+
         return nums
+
 
 test_cases = [
     {
